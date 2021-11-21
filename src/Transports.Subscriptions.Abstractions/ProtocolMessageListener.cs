@@ -80,7 +80,8 @@ namespace GraphQL.Server.Transports.Subscriptions.Abstractions
             _logger.LogDebug("Handle init");
             return context.Writer.SendAsync(new OperationMessage
             {
-                Type = MessageType.GQL_CONNECTION_ACK
+                Type = MessageType.GQL_CONNECTION_ACK,
+                Payload = context.Message.Payload,
             });
         }
 
