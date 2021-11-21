@@ -24,6 +24,8 @@ namespace GraphQL.Server.Transports.Subscriptions.Abstractions
             return context.Message.Type switch
             {
                 MessageType.GQL_CONNECTION_INIT => HandleInitAsync(context),
+                MessageType.GQL_PING => HandlePingAsync(context),
+                MessageType.GQL_PONG => HandlePongAsync(context),
                 MessageType.GQL_START => HandleStartAsync(context),
                 MessageType.GQL_STOP => HandleStopAsync(context),
                 MessageType.GQL_CONNECTION_TERMINATE => HandleTerminateAsync(context),
@@ -85,6 +87,25 @@ namespace GraphQL.Server.Transports.Subscriptions.Abstractions
         {
             _logger.LogDebug("Handle terminate");
             return context.Terminate();
+        }
+
+        private Task HandlePingAsync(MessageHandlingContext context)
+        {
+            _logger.LogDebug("Handle ping");
+            return context.Writer.SendAsync(new OperationMessage
+            {
+                Type = MessageType.GQL_PONG,
+                Payload = context.Message.Payload,
+            });
+        }
+
+        private Task HandlePongAsync(MessageHandlingContext context)
+        {
+            _logger.LogDebug("Handle pong");
+            return context.Writer.SendAsync(new OperationMessage
+            {
+                Type = MessageType.GQL_CONNECTION_ACK
+            });
         }
     }
 }

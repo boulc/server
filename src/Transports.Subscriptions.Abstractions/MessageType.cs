@@ -89,5 +89,8 @@ namespace GraphQL.Server.Transports.Subscriptions.Abstractions
         ///     id: string : operation id
         /// </summary>
         public const string GQL_STOP = "stop"; // Client -> Server
+
+        public const string GQL_PING = "ping";
+        public const string GQL_PONG = "pong";
     }
 }
