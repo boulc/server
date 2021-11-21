@@ -42,7 +42,7 @@ namespace GraphQL.Server.Transports.WebSockets.Tests
         {
             /* Given */
             /* When */
-            var socket = await ConnectAsync("graphql-ws");
+            var socket = await ConnectAsync("graphql-transport-ws");
 
             /* Then */
             Assert.Equal(WebSocketState.Open, socket.State);

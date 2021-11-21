@@ -42,17 +42,17 @@ namespace GraphQL.Server.Transports.WebSockets
 
                 _logger.LogDebug("Connection is a valid websocket request");
 
-                var socket = await context.WebSockets.AcceptWebSocketAsync("graphql-ws");
+                var socket = await context.WebSockets.AcceptWebSocketAsync("graphql-transport-ws");
 
                 if (!context.WebSockets.WebSocketRequestedProtocols.Contains(socket.SubProtocol))
                 {
                     _logger.LogError(
-                        "Websocket connection does not have correct protocol: graphql-ws. Request protocols: {protocols}",
+                        "Websocket connection does not have correct protocol: graphql-transport-ws. Request protocols: {protocols}",
                         context.WebSockets.WebSocketRequestedProtocols);
 
                     await socket.CloseAsync(
                         WebSocketCloseStatus.ProtocolError,
-                        "Server only supports graphql-ws protocol",
+                        "Server only supports graphql-transport-ws protocol",
                         context.RequestAborted);
 
                     return;
