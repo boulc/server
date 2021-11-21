@@ -57,6 +57,9 @@ namespace GraphQL.Server.Transports.Subscriptions.Abstractions
             if (_disposed)
                 throw new ObjectDisposedException(nameof(SubscriptionManager));
 
+            if (_subscriptions.ContainsKey(id))
+                throw new TransportProtocolException($"Subscriber for {id} already exists", CloseCode.SubscriberAlreadyExists);
+
             var subscription = await ExecuteAsync(id, payload, context).ConfigureAwait(false);
 
             if (subscription == null)
