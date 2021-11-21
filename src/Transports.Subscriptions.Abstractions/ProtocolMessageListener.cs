@@ -26,6 +26,7 @@ namespace GraphQL.Server.Transports.Subscriptions.Abstractions
                 MessageType.GQL_CONNECTION_INIT => HandleInitAsync(context),
                 MessageType.GQL_PING => HandlePingAsync(context),
                 MessageType.GQL_PONG => HandlePongAsync(context),
+                MessageType.GQL_SUBSCRIBE => HandleSubscribeAsync(context),
                 MessageType.GQL_START => HandleStartAsync(context),
                 MessageType.GQL_STOP => HandleStopAsync(context),
                 MessageType.GQL_CONNECTION_TERMINATE => HandleTerminateAsync(context),
@@ -106,6 +107,19 @@ namespace GraphQL.Server.Transports.Subscriptions.Abstractions
             {
                 Type = MessageType.GQL_CONNECTION_ACK
             });
+        }
+        private Task HandleSubscribeAsync(MessageHandlingContext context)
+        {
+            var message = context.Message;
+            _logger.LogDebug("Handle subscribe: {id}", message.Id);
+            var payload = ((JObject)message.Payload).ToObject<OperationMessagePayload>();
+            if (payload == null)
+                throw new InvalidOperationException("Could not get OperationMessagePayload from message.Payload");
+
+            return context.Subscriptions.SubscribeOrExecuteAsync(
+                message.Id,
+                payload,
+                context);
         }
     }
 }
