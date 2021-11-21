@@ -26,8 +26,11 @@ namespace GraphQL.Server
             writer.WritePropertyName("type");
             writer.WriteStringValue(message.Type);
 
-            writer.WritePropertyName("payload");
-            JsonSerializer.Serialize(writer, message.Payload, options);
+            if (message.Payload != null)
+            {
+                writer.WritePropertyName("payload");
+                JsonSerializer.Serialize(writer, message.Payload, options);
+            }
 
             writer.WriteEndObject();
         }
