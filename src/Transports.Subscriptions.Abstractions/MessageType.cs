@@ -92,5 +92,7 @@ namespace GraphQL.Server.Transports.Subscriptions.Abstractions
 
         public const string GQL_PING = "ping";
         public const string GQL_PONG = "pong";
+
+        public const string GQL_SUBSCRIBE = "subscribe";
     }
 }
